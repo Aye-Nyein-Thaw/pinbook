@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(5)->create();
 
         Category::factory()->create(['name' => 'Food']);
         Category::factory()->create(['name' => 'Nature']);
@@ -26,6 +27,8 @@ class DatabaseSeeder extends Seeder
         Category::factory()->create(['name' => 'Nightlife']);
         Category::factory()->create(['name' => 'Shopping']);
         Category::factory()->create(['name' => 'Other']);
+
+        Trip::factory(15)->create();
 
         User::factory()->create([
             'name' => 'Test User',
