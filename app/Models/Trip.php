@@ -15,4 +15,9 @@ class Trip extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function places()
+    {
+        return $this->hasMany(Place::class);
+    }
 }

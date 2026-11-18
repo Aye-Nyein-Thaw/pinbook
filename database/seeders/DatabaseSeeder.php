@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Place;
 use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
         Category::factory()->create(['name' => 'Other']);
 
         Trip::factory(15)->create();
+        Place::factory(60)->create();
 
         User::factory()->create([
             'name' => 'Test User',
