@@ -20,4 +20,9 @@ class Trip extends Model
     {
         return $this->hasMany(Place::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

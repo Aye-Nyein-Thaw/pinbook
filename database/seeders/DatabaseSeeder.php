@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Place;
 use App\Models\Trip;
 use App\Models\User;
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
 
         Trip::factory(15)->create();
         Place::factory(60)->create();
+        Comment::factory(120)->create();
 
         User::factory()->create([
             'name' => 'Test User',
