@@ -10,4 +10,9 @@ class Category extends Model
 {
     /** @use HasFactory<CategoryFactory> */
     use HasFactory;
+
+    public function places()
+    {
+        return $this->belongsToMany(Place::class);
+    }
 }

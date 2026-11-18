@@ -15,4 +15,9 @@ class Place extends Model
     {
         return $this->belongsTo(Trip::class);
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }
