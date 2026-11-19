@@ -17,6 +17,7 @@ class SiteLayoutHeader extends Component
     {
         $this->menu = [
             'home' => route('welcome'),
+            'trips' => route('trips.index'),
         ];
     }
 
