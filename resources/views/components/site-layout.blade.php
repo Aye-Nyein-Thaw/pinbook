@@ -17,19 +17,13 @@
 <body>
 
 <div>
-    <div>
-        <a href="{{ route('welcome') }}">PINBOOK</a>
-        <hr/>
-    </div>
+    <x-site-layout-header />
 
     <main>
         {{ $slot }}
     </main>
 
-    <div>
-        <hr/>
-        Pinbook, a travel journal
-    </div>
+    <x-site-layout-footer />
 </div>
 
 </body>
