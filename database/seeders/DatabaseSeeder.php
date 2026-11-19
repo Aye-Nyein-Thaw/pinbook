@@ -19,6 +19,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory()->admin()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+        ]);
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
         User::factory(5)->create();
 
         Category::factory()->create(['name' => 'Food']);
@@ -33,10 +41,5 @@ class DatabaseSeeder extends Seeder
         Trip::factory(15)->create();
         Place::factory(60)->create();
         Comment::factory(120)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
     }
 }

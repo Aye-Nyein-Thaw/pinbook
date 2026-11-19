@@ -22,7 +22,7 @@ class TripFactory extends Factory
         $startDate = $this->faker->dateTimeBetween('-2 years', '-1 month');
 
         return [
-            'user_id' => $this->faker->numberBetween(1, 5),
+            'user_id' => $this->faker->numberBetween(1, 7),
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraphs(3, true),
             'destination' => $this->faker->city(),

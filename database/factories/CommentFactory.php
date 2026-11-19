@@ -19,7 +19,7 @@ class CommentFactory extends Factory
     {
         return [
             'trip_id' => $this->faker->numberBetween(1, 15),
-            'user_id' => $this->faker->numberBetween(1, 5),
+            'user_id' => $this->faker->numberBetween(1, 7),
             'content' => $this->faker->text(),
         ];
     }
