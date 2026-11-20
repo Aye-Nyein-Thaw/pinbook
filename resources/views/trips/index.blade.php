@@ -4,7 +4,7 @@
 
     @foreach($trips as $trip)
         <div>
-            <h2>{{ $trip->title }}</h2>
+            <h2><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->title }}</a></h2>
             <p>
                 {{ $trip->destination }}
                 &middot;

@@ -15,4 +15,15 @@ class TripController extends Controller
 
         return view('trips.index', compact('trips'));
     }
+
+    public function show(int $id)
+    {
+        $trip = Trip::query()
+            ->where('is_public', true)
+            ->findOrFail($id);
+
+        $places = $trip->places()->orderBy('visited_on')->get();
+
+        return view('trips.show', compact('trip', 'places'));
+    }
 }

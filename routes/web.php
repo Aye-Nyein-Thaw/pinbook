@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::get('/', WelcomeController::class)->name('welcome');
 
-Route::resource('trips', TripController::class)->only(['index']);
+Route::resource('trips', TripController::class)->only(['index', 'show']);
 
 /*
  * Authentication routes
