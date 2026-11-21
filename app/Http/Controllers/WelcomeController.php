@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Trip;
+
 class WelcomeController extends Controller
 {
     /**
@@ -9,6 +11,12 @@ class WelcomeController extends Controller
      */
     public function __invoke()
     {
-        return view('welcome');
+        $trips = Trip::query()
+            ->where('is_public', true)
+            ->orderByDesc('start_date')
+            ->take(6)
+            ->get();
+
+        return view('welcome', compact('trips'));
     }
 }
