@@ -8,7 +8,7 @@
         @production
         @else
             <div class="bg-pink-200 p-1">
-                admin@example.com or test@example.com + password
+                admin@example.com, admin@admin.com or test@example.com + password
             </div>
         @endproduction
 
