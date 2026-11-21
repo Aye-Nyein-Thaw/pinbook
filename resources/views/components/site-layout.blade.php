@@ -20,13 +20,13 @@
 <body class="bg-teal-50 font-sans text-slate-800 antialiased">
 
 <div class="mx-auto flex min-h-screen max-w-6xl flex-col bg-white shadow-sm">
-    <x-site-layout-header />
+    <x-site-layout-header :menu="$menu" />
 
     <main class="flex-1 px-10 py-10">
         {{ $slot }}
     </main>
 
-    <x-site-layout-footer />
+    <x-site-layout-footer :menu="$menu" />
 </div>
 
 </body>

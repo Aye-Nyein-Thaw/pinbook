@@ -11,9 +11,16 @@ class SiteLayout extends Component
     /**
      * Create a new component instance.
      */
+    public array $menu = [];
+
     public function __construct(public ?string $title = null)
     {
-        //
+        // the menu is defined once, here, and shown in the header and the footer
+        $this->menu = [
+            'home' => route('welcome'),
+            'trips' => route('trips.index'),
+            'categories' => route('categories.index'),
+        ];
     }
 
     /**
