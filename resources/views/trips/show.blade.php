@@ -1,8 +1,8 @@
 <x-site-layout :title="$trip->title">
 
-    <h1>{{ $trip->title }}</h1>
+    <h1 class="text-3xl font-bold tracking-tight text-teal-800">{{ $trip->title }}</h1>
 
-    <p>
+    <p class="mt-2 text-sm text-slate-500">
         {{ $trip->destination }}
         &middot;
         {{ $trip->start_date }} - {{ $trip->end_date }}
@@ -10,37 +10,42 @@
         by {{ $trip->user->name }}
     </p>
 
-    <p>{{ $trip->description }}</p>
+    <p class="mt-6 max-w-3xl whitespace-pre-line leading-7 text-slate-700">{{ $trip->description }}</p>
 
-    <h2>Places</h2>
+    <h2 class="mt-10 text-2xl font-semibold text-slate-900">Places</h2>
 
-    @forelse($places as $place)
-        <div>
-            <h3><a href="{{ route('places.show', $place->id) }}">{{ $place->name }}</a></h3>
-            <p>{{ $place->visited_on }}</p>
-            <div>
-                @foreach($place->categories as $category)
-                    <span>{{ $category->name }}</span>
-                @endforeach
+    <div class="mt-4 divide-y divide-teal-100 border-t border-teal-100">
+        @forelse($places as $place)
+            <div class="py-5">
+                <h3 class="text-lg font-semibold">
+                    <a href="{{ route('places.show', $place->id) }}" class="text-teal-700 hover:underline">{{ $place->name }}</a>
+                </h3>
+                <p class="mt-1 text-sm text-slate-500">{{ $place->visited_on }}</p>
+                <div class="mt-2 flex flex-wrap gap-2">
+                    @foreach($place->categories as $category)
+                        <span class="rounded-full bg-teal-100 px-3 py-0.5 text-xs font-medium text-teal-800">{{ $category->name }}</span>
+                    @endforeach
+                </div>
+                <p class="mt-3 max-w-3xl whitespace-pre-line text-sm leading-6 text-slate-600">{{ $place->story }}</p>
             </div>
-            <p>{{ $place->story }}</p>
-        </div>
-        <hr/>
-    @empty
-        <p>No places yet.</p>
-    @endforelse
+        @empty
+            <p class="py-4 text-sm text-slate-500">No places yet.</p>
+        @endforelse
+    </div>
 
-    <h2>Comments</h2>
+    <h2 class="mt-10 text-2xl font-semibold text-slate-900">Comments</h2>
 
-    @forelse($trip->comments as $comment)
-        <div>
-            <strong>{{ $comment->user->name }}</strong>
-            <p>{{ $comment->content }}</p>
-        </div>
-    @empty
-        <p>No comments yet.</p>
-    @endforelse
+    <div class="mt-4 divide-y divide-teal-100 border-t border-teal-100">
+        @forelse($trip->comments as $comment)
+            <div class="py-4">
+                <strong class="text-sm text-slate-800">{{ $comment->user->name }}</strong>
+                <p class="mt-1 text-sm leading-6 text-slate-600">{{ $comment->content }}</p>
+            </div>
+        @empty
+            <p class="py-4 text-sm text-slate-500">No comments yet.</p>
+        @endforelse
+    </div>
 
-    <p><a href="{{ route('trips.index') }}">Back to all trips</a></p>
+    <p class="mt-8"><a href="{{ route('trips.index') }}" class="font-medium text-teal-700 hover:underline">Back to all trips</a></p>
 
 </x-site-layout>
