@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\Userzone\DashboardController;
@@ -14,6 +15,7 @@ Route::get('/', WelcomeController::class)->name('welcome');
 
 Route::resource('trips', TripController::class)->only(['index', 'show']);
 Route::resource('places', PlaceController::class)->only(['show']);
+Route::resource('categories', CategoryController::class)->only(['index', 'show']);
 
 /*
  * Authentication routes
