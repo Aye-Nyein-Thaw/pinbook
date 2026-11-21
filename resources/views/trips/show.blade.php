@@ -16,7 +16,7 @@
 
     @forelse($places as $place)
         <div>
-            <h3>{{ $place->name }}</h3>
+            <h3><a href="{{ route('places.show', $place->id) }}">{{ $place->name }}</a></h3>
             <p>{{ $place->visited_on }}</p>
             <div>
                 @foreach($place->categories as $category)
