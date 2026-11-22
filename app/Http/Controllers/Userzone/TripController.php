@@ -59,6 +59,23 @@ class TripController extends Controller
         return redirect()->route('userzone.trips.index');
     }
 
+    public function destroy(int $id)
+    {
+        $trip = Trip::findOrFail($id);
+
+        // our foreign keys are pure (no cascades), so we clean up ourselves:
+        // first the category links of its places, then the places and the comments
+        foreach ($trip->places as $place) {
+            $place->categories()->detach();
+        }
+        $trip->places()->delete();
+        $trip->comments()->delete();
+
+        $trip->delete();
+
+        return redirect()->route('userzone.trips.index');
+    }
+
     /**
      * @return array<string, array<int, string>>
      */
