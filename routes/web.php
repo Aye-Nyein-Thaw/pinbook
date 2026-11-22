@@ -29,7 +29,10 @@ Route::middleware('auth')->group(function () {
     // For the user's dashboard (after login)
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-    // Todo: add your Userzone routes here
+    // Normal user routes here ------------------------------------------------------------------
+    Route::prefix('user')->name('userzone.')->group(function () {
+        Route::resource('categories', App\Http\Controllers\Userzone\CategoryController::class)->only(['index']);
+    });
 
     // For the user's profile management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -1,0 +1,36 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Categories
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <h3 class="font-semibold text-gray-900">All categories</h3>
+                </div>
+
+                <table class="w-full text-left text-sm text-gray-900">
+                    <thead class="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 font-medium">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($categories as $category)
+                            <tr>
+                                <td class="px-6 py-4">{{ $category->name }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td class="px-6 py-8 text-center text-gray-500">No categories yet.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
