@@ -11,6 +11,8 @@ class Category extends Model
     /** @use HasFactory<CategoryFactory> */
     use HasFactory;
 
+    protected $guarded = [];
+
     public function places()
     {
         return $this->belongsToMany(Place::class);
