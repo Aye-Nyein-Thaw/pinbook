@@ -13,6 +13,20 @@ class Place extends Model
 
     protected $guarded = [];
 
+    public function canManage($user): bool
+    {
+        if ($user->is_admin) {
+            return true;
+        }
+
+        // a place has no owner of its own: its trip's owner is its owner
+        if ($this->trip->user_id == $user->id) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function trip()
     {
         return $this->belongsTo(Trip::class);

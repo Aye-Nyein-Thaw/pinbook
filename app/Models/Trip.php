@@ -13,6 +13,19 @@ class Trip extends Model
 
     protected $guarded = [];
 
+    public function canManage($user): bool
+    {
+        if ($user->is_admin) {
+            return true;
+        }
+
+        if ($this->user_id == $user->id) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
