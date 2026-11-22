@@ -18,6 +18,9 @@ Dashboard
                     <x-breeze.nav-link :href="route('userzone.trips.index')" :active="request()->routeIs('userzone.trips.*')">
                         My trips
                     </x-breeze.nav-link>
+                    <x-breeze.nav-link :href="route('userzone.places.index')" :active="request()->routeIs('userzone.places.*')">
+                        My places
+                    </x-breeze.nav-link>
                     <x-breeze.nav-link :href="route('userzone.categories.index')" :active="request()->routeIs('userzone.categories.*')">
                         Categories
                     </x-breeze.nav-link>
@@ -78,6 +81,9 @@ Log Out
             </x-breeze.responsive-nav-link>
             <x-breeze.responsive-nav-link :href="route('userzone.trips.index')" :active="request()->routeIs('userzone.trips.*')">
                 My trips
+            </x-breeze.responsive-nav-link>
+            <x-breeze.responsive-nav-link :href="route('userzone.places.index')" :active="request()->routeIs('userzone.places.*')">
+                My places
             </x-breeze.responsive-nav-link>
             <x-breeze.responsive-nav-link :href="route('userzone.categories.index')" :active="request()->routeIs('userzone.categories.*')">
                 Categories
