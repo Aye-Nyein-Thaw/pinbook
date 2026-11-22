@@ -42,6 +42,31 @@ class PlaceController extends Controller
         return redirect()->route('userzone.places.index');
     }
 
+    public function edit(int $id)
+    {
+        $place = Place::findOrFail($id);
+
+        return view('userzone.places.edit', [
+            'place' => $place,
+            'tripOptions' => $this->tripOptions(),
+            'categoryOptions' => $this->categoryOptions(),
+        ]);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $validated = $request->validate($this->validationRules(), $this->validationMessages());
+
+        $place = Place::findOrFail($id);
+
+        $place->update(Arr::except($validated, ['categories']));
+
+        // sync also removes the categories that were unticked
+        $place->categories()->sync($validated['categories'] ?? []);
+
+        return redirect()->route('userzone.places.index');
+    }
+
     /**
      * @return array<string, array<int, string>>
      */

@@ -23,6 +23,7 @@
                             <th scope="col" class="px-6 py-3 font-medium">Trip</th>
                             <th scope="col" class="px-6 py-3 font-medium">Visited on</th>
                             <th scope="col" class="px-6 py-3 font-medium">Categories</th>
+                            <th scope="col" class="px-6 py-3 font-medium text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -36,10 +37,13 @@
                                         <span class="rounded-full bg-gray-100 px-3 py-0.5 text-xs font-medium text-gray-700">{{ $category->name }}</span>
                                     @endforeach
                                 </td>
+                                <td class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-widest">
+                                    <a href="{{ route('userzone.places.edit', $place->id) }}" class="text-gray-800 hover:text-gray-600">Edit</a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-6 py-8 text-center text-gray-500">None of your trips has places yet.</td>
+                                <td colspan="5" class="px-6 py-8 text-center text-gray-500">None of your trips has places yet.</td>
                             </tr>
                         @endforelse
                     </tbody>
