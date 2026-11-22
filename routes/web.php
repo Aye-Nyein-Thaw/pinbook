@@ -6,6 +6,7 @@ use App\Http\Controllers\TripController;
 use App\Http\Controllers\Userzone\DashboardController;
 use App\Http\Controllers\Userzone\ProfileController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('user')->name('userzone.')->group(function () {
         Route::resource('trips', App\Http\Controllers\Userzone\TripController::class)->except('show');
         Route::resource('places', App\Http\Controllers\Userzone\PlaceController::class)->except('show');
+    });
+
+    // Admin user routes -------------------------------------------------------------------------
+    Route::prefix('user')->name('userzone.')->middleware(IsAdmin::class)->group(function () {
         Route::resource('categories', App\Http\Controllers\Userzone\CategoryController::class)->except('show');
     });
 
