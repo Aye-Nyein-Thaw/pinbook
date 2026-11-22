@@ -32,4 +32,26 @@ class CategoryController extends Controller
 
         return redirect()->route('userzone.categories.index');
     }
+
+    public function edit(int $id)
+    {
+        $category = Category::findOrFail($id);
+
+        return view('userzone.categories.edit', compact('category'));
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'min:3', 'max:255'],
+        ]);
+
+        $category = Category::findOrFail($id);
+
+        $category->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('userzone.categories.index');
+    }
 }

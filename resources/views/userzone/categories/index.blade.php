@@ -20,16 +20,20 @@
                     <thead class="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
                         <tr>
                             <th scope="col" class="px-6 py-3 font-medium">Name</th>
+                            <th scope="col" class="px-6 py-3 font-medium text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($categories as $category)
                             <tr>
                                 <td class="px-6 py-4">{{ $category->name }}</td>
+                                <td class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-widest">
+                                    <a href="{{ route('userzone.categories.edit', $category->id) }}" class="text-gray-800 hover:text-gray-600">Edit</a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td class="px-6 py-8 text-center text-gray-500">No categories yet.</td>
+                                <td colspan="2" class="px-6 py-8 text-center text-gray-500">No categories yet.</td>
                             </tr>
                         @endforelse
                     </tbody>
