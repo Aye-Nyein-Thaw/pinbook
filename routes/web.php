@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
 
     // Normal user routes here ------------------------------------------------------------------
     Route::prefix('user')->name('userzone.')->group(function () {
+        Route::resource('trips', App\Http\Controllers\Userzone\TripController::class)->only(['index']);
         Route::resource('categories', App\Http\Controllers\Userzone\CategoryController::class)->except('show');
     });
 
