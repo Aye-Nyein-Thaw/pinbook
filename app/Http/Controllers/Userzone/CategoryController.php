@@ -54,4 +54,16 @@ class CategoryController extends Controller
 
         return redirect()->route('userzone.categories.index');
     }
+
+    public function destroy(int $id)
+    {
+        $category = Category::findOrFail($id);
+
+        // the places stay; only their links to this category are removed
+        $category->places()->detach();
+
+        $category->delete();
+
+        return redirect()->route('userzone.categories.index');
+    }
 }

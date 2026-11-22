@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
 
     // Normal user routes here ------------------------------------------------------------------
     Route::prefix('user')->name('userzone.')->group(function () {
-        Route::resource('categories', App\Http\Controllers\Userzone\CategoryController::class)->only(['index', 'create', 'store', 'edit', 'update']);
+        Route::resource('categories', App\Http\Controllers\Userzone\CategoryController::class)->except('show');
     });
 
     // For the user's profile management
