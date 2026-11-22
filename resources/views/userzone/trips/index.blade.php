@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                    <h3 class="font-semibold text-gray-900">Hello {{ auth()->user()->name }}, these are your trips</h3>
+                    <h3 class="font-semibold text-gray-900">Hello {{ auth()->user()->name }}, {{ auth()->user()->is_admin ? 'these are all the trips' : 'these are your trips' }}</h3>
 
                     <a href="{{ route('userzone.trips.create') }}" class="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700">
                         New trip
@@ -20,6 +20,9 @@
                     <thead class="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
                         <tr>
                             <th scope="col" class="px-6 py-3 font-medium">Title</th>
+                            @if(auth()->user()->is_admin)
+                                <th scope="col" class="px-6 py-3 font-medium">Owner</th>
+                            @endif
                             <th scope="col" class="px-6 py-3 font-medium">Destination</th>
                             <th scope="col" class="px-6 py-3 font-medium">Dates</th>
                             <th scope="col" class="px-6 py-3 font-medium">Visibility</th>
@@ -30,6 +33,9 @@
                         @forelse($trips as $trip)
                             <tr>
                                 <td class="px-6 py-4">{{ $trip->title }}</td>
+                                @if(auth()->user()->is_admin)
+                                    <td class="px-6 py-4">{{ $trip->user->name }}</td>
+                                @endif
                                 <td class="px-6 py-4">{{ $trip->destination }}</td>
                                 <td class="px-6 py-4">{{ $trip->start_date }} - {{ $trip->end_date }}</td>
                                 <td class="px-6 py-4">{{ $trip->is_public ? 'Public' : 'Private' }}</td>
@@ -47,7 +53,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-8 text-center text-gray-500">You have no trips yet.</td>
+                                <td colspan="6" class="px-6 py-8 text-center text-gray-500">You have no trips yet.</td>
                             </tr>
                         @endforelse
                     </tbody>

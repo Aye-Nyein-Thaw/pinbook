@@ -10,10 +10,17 @@ class TripController extends Controller
 {
     public function index()
     {
-        $trips = Trip::query()
-            ->where('user_id', auth()->user()->id)
-            ->orderByDesc('start_date')
-            ->get();
+        if (auth()->user()->is_admin) {
+            // an admin sees the trips of everybody
+            $trips = Trip::query()
+                ->orderByDesc('start_date')
+                ->get();
+        } else {
+            $trips = Trip::query()
+                ->where('user_id', auth()->user()->id)
+                ->orderByDesc('start_date')
+                ->get();
+        }
 
         return view('userzone.trips.index', compact('trips'));
     }
@@ -41,6 +48,8 @@ class TripController extends Controller
     {
         $trip = Trip::findOrFail($id);
 
+        abort_unless($trip->canManage(auth()->user()), 403);
+
         return view('userzone.trips.edit', [
             'trip' => $trip,
             'visibilityOptions' => $this->visibilityOptions(),
@@ -53,6 +62,8 @@ class TripController extends Controller
 
         $trip = Trip::findOrFail($id);
 
+        abort_unless($trip->canManage(auth()->user()), 403);
+
         // the owner (user_id) is not in $validated, so it never changes here
         $trip->update($validated);
 
@@ -62,6 +73,8 @@ class TripController extends Controller
     public function destroy(int $id)
     {
         $trip = Trip::findOrFail($id);
+
+        abort_unless($trip->canManage(auth()->user()), 403);
 
         // our foreign keys are pure (no cascades), so we clean up ourselves:
         // first the category links of its places, then the places and the comments
