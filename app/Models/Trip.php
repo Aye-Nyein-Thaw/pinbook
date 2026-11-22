@@ -11,6 +11,8 @@ class Trip extends Model
     /** @use HasFactory<TripFactory> */
     use HasFactory;
 
+    protected $guarded = [];
+
     public function user()
     {
         return $this->belongsTo(User::class);
