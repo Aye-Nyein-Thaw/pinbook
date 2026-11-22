@@ -11,6 +11,8 @@ class Place extends Model
     /** @use HasFactory<PlaceFactory> */
     use HasFactory;
 
+    protected $guarded = [];
+
     public function trip()
     {
         return $this->belongsTo(Trip::class);

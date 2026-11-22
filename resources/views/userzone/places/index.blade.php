@@ -8,8 +8,12 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
-                <div class="px-6 py-4 border-b border-gray-100">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                     <h3 class="font-semibold text-gray-900">The places of your trips</h3>
+
+                    <a href="{{ route('userzone.places.create') }}" class="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700">
+                        New place
+                    </a>
                 </div>
 
                 <table class="w-full text-left text-sm text-gray-900">
