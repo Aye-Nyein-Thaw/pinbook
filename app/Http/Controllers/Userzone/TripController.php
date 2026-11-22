@@ -27,18 +27,7 @@ class TripController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'min:3', 'max:255'],
-            'description' => ['required', 'string'],
-            'destination' => ['required', 'string', 'max:255'],
-            'start_date' => ['required', 'date'],
-            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
-            'is_public' => ['required', 'boolean'],
-        ], [
-            'title.min' => 'The title needs at least 3 characters.',
-            'end_date.after_or_equal' => 'The end date can not be before the start date.',
-            'is_public.required' => 'Please choose public or private.',
-        ]);
+        $validated = $request->validate($this->validationRules(), $this->validationMessages());
 
         // the trip belongs to the logged-in user, never to a value sent by the form
         $validated['user_id'] = auth()->user()->id;
@@ -46,6 +35,33 @@ class TripController extends Controller
         Trip::create($validated);
 
         return redirect()->route('userzone.trips.index');
+    }
+
+    /**
+     * @return array<string, array<int, string>>
+     */
+    private function validationRules(): array
+    {
+        return [
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'description' => ['required', 'string'],
+            'destination' => ['required', 'string', 'max:255'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+            'is_public' => ['required', 'boolean'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function validationMessages(): array
+    {
+        return [
+            'title.min' => 'The title needs at least 3 characters.',
+            'end_date.after_or_equal' => 'The end date can not be before the start date.',
+            'is_public.required' => 'Please choose public or private.',
+        ];
     }
 
     /**
