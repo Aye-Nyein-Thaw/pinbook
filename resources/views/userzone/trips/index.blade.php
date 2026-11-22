@@ -23,6 +23,7 @@
                             <th scope="col" class="px-6 py-3 font-medium">Destination</th>
                             <th scope="col" class="px-6 py-3 font-medium">Dates</th>
                             <th scope="col" class="px-6 py-3 font-medium">Visibility</th>
+                            <th scope="col" class="px-6 py-3 font-medium text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -32,10 +33,13 @@
                                 <td class="px-6 py-4">{{ $trip->destination }}</td>
                                 <td class="px-6 py-4">{{ $trip->start_date }} - {{ $trip->end_date }}</td>
                                 <td class="px-6 py-4">{{ $trip->is_public ? 'Public' : 'Private' }}</td>
+                                <td class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-widest">
+                                    <a href="{{ route('userzone.trips.edit', $trip->id) }}" class="text-gray-800 hover:text-gray-600">Edit</a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-6 py-8 text-center text-gray-500">You have no trips yet.</td>
+                                <td colspan="5" class="px-6 py-8 text-center text-gray-500">You have no trips yet.</td>
                             </tr>
                         @endforelse
                     </tbody>

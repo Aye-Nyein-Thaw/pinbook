@@ -37,6 +37,28 @@ class TripController extends Controller
         return redirect()->route('userzone.trips.index');
     }
 
+    public function edit(int $id)
+    {
+        $trip = Trip::findOrFail($id);
+
+        return view('userzone.trips.edit', [
+            'trip' => $trip,
+            'visibilityOptions' => $this->visibilityOptions(),
+        ]);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $validated = $request->validate($this->validationRules(), $this->validationMessages());
+
+        $trip = Trip::findOrFail($id);
+
+        // the owner (user_id) is not in $validated, so it never changes here
+        $trip->update($validated);
+
+        return redirect()->route('userzone.trips.index');
+    }
+
     /**
      * @return array<string, array<int, string>>
      */
