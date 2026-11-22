@@ -67,6 +67,18 @@ class PlaceController extends Controller
         return redirect()->route('userzone.places.index');
     }
 
+    public function destroy(int $id)
+    {
+        $place = Place::findOrFail($id);
+
+        // pure foreign keys: remove the category links ourselves
+        $place->categories()->detach();
+
+        $place->delete();
+
+        return redirect()->route('userzone.places.index');
+    }
+
     /**
      * @return array<string, array<int, string>>
      */

@@ -38,7 +38,15 @@
                                     @endforeach
                                 </td>
                                 <td class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-widest">
-                                    <a href="{{ route('userzone.places.edit', $place->id) }}" class="text-gray-800 hover:text-gray-600">Edit</a>
+                                    <div class="flex items-center justify-end gap-4">
+                                        <a href="{{ route('userzone.places.edit', $place->id) }}" class="text-gray-800 hover:text-gray-600">Edit</a>
+
+                                        <form action="{{ route('userzone.places.destroy', $place->id) }}" method="post">
+                                            @method('delete')
+                                            @csrf
+                                            <button type="submit" class="text-red-600 hover:text-red-500">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
