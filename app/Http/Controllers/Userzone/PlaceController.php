@@ -13,11 +13,18 @@ class PlaceController extends Controller
 {
     public function index()
     {
-        // the places of the trips of the logged-in user
-        $places = Place::query()
-            ->whereHas('trip', fn ($query) => $query->where('user_id', auth()->user()->id))
-            ->orderBy('name')
-            ->get();
+        if (auth()->user()->is_admin) {
+            // an admin sees the places of everybody
+            $places = Place::query()
+                ->orderBy('name')
+                ->get();
+        } else {
+            // the places of the trips of the logged-in user
+            $places = Place::query()
+                ->whereHas('trip', fn ($query) => $query->where('user_id', auth()->user()->id))
+                ->orderBy('name')
+                ->get();
+        }
 
         return view('userzone.places.index', compact('places'));
     }
@@ -34,6 +41,8 @@ class PlaceController extends Controller
     {
         $validated = $request->validate($this->validationRules(), $this->validationMessages());
 
+        $this->abortUnlessAllowedToUseTrip($validated['trip_id']);
+
         // "categories" is not a column of places: it belongs in the pivot table
         $place = Place::create(Arr::except($validated, ['categories']));
 
@@ -45,6 +54,8 @@ class PlaceController extends Controller
     public function edit(int $id)
     {
         $place = Place::findOrFail($id);
+
+        abort_unless($place->canManage(auth()->user()), 403);
 
         return view('userzone.places.edit', [
             'place' => $place,
@@ -59,6 +70,11 @@ class PlaceController extends Controller
 
         $place = Place::findOrFail($id);
 
+        abort_unless($place->canManage(auth()->user()), 403);
+
+        // the place may only be moved to a trip the user may manage
+        $this->abortUnlessAllowedToUseTrip($validated['trip_id']);
+
         $place->update(Arr::except($validated, ['categories']));
 
         // sync also removes the categories that were unticked
@@ -70,6 +86,8 @@ class PlaceController extends Controller
     public function destroy(int $id)
     {
         $place = Place::findOrFail($id);
+
+        abort_unless($place->canManage(auth()->user()), 403);
 
         // pure foreign keys: remove the category links ourselves
         $place->categories()->detach();
@@ -109,16 +127,27 @@ class PlaceController extends Controller
     }
 
     /**
-     * The trips of the logged-in user, as options for a select.
+     * A place may only be added to (or moved to) a trip that the user may manage.
+     */
+    private function abortUnlessAllowedToUseTrip(int $tripId): void
+    {
+        $trip = Trip::findOrFail($tripId);
+
+        abort_unless($trip->canManage(auth()->user()), 403);
+    }
+
+    /**
+     * The trips the logged-in user may use, as options for a select.
      *
      * @return array<int, array{key: int, value: string}>
      */
     private function tripOptions(): array
     {
-        return Trip::query()
-            ->where('user_id', auth()->user()->id)
-            ->orderBy('title')
-            ->get()
+        $trips = auth()->user()->is_admin
+            ? Trip::query()->orderBy('title')->get()
+            : Trip::query()->where('user_id', auth()->user()->id)->orderBy('title')->get();
+
+        return $trips
             ->map(fn (Trip $trip) => [
                 'key' => $trip->id,
                 'value' => $trip->title,
