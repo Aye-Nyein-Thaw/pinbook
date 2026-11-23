@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
         Category::factory()->create(['name' => 'Other']);
 
         Trip::factory(15)->create();
-        $places = Place::factory(60)->create();
+        $places = Place::factory(30)->create();
         foreach ($places as $place) {
             $subset = Category::inRandomOrder()->take(rand(0, 3))->pluck('id')->toArray();
             $place->categories()->attach($subset);
