@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
             $place->categories()->attach($subset);
         }
 
-        Comment::factory(120)->create();
+        Comment::factory(105)->create();
+        Comment::factory(15)->unapproved()->create();
     }
 }

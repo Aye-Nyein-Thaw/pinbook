@@ -21,6 +21,14 @@ class CommentFactory extends Factory
             'trip_id' => $this->faker->numberBetween(1, 12),
             'user_id' => $this->faker->numberBetween(1, 8),
             'content' => $this->faker->text(),
+            'approved_at' => now(),
         ];
+    }
+
+    public function unapproved(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'approved_at' => null,
+        ]);
     }
 }

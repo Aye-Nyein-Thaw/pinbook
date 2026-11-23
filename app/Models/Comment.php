@@ -13,6 +13,13 @@ class Comment extends Model
 
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'approved_at' => 'datetime',
+        ];
+    }
+
     public function trip()
     {
         return $this->belongsTo(Trip::class);
