@@ -91,5 +91,7 @@ test('the notification email contains the trip, the writer and the comment', fun
 
     expect($mail->greeting)->toBe('Hello Olivia Owner!')
         ->and(implode(' ', $mail->introLines))->toContain('Walter Writer', 'Walking in Lisbon', 'Great photos!')
-        ->and($mail->actionUrl)->toBe(route('trips.show', $trip->id));
+        ->and(implode(' ', $mail->introLines))->toContain('awaiting validation')
+        ->and($mail->actionText)->toBe('Review the comment')
+        ->and($mail->actionUrl)->toBe(route('userzone.comments.show', $comment->id));
 });
