@@ -43,10 +43,14 @@ class PlaceController extends Controller
 
         $this->abortUnlessAllowedToUseTrip($validated['trip_id']);
 
-        // "categories" is not a column of places: it belongs in the pivot table
-        $place = Place::create(Arr::except($validated, ['categories']));
+        // "categories" and "photo" are not columns of places
+        $place = Place::create(Arr::except($validated, ['categories', 'photo']));
 
         $place->categories()->sync($validated['categories'] ?? []);
+
+        if ($request->hasFile('photo')) {
+            $place->addMediaFromRequest('photo')->toMediaCollection('photos');
+        }
 
         return redirect()->route('userzone.places.index');
     }
@@ -75,10 +79,15 @@ class PlaceController extends Controller
         // the place may only be moved to a trip the user may manage
         $this->abortUnlessAllowedToUseTrip($validated['trip_id']);
 
-        $place->update(Arr::except($validated, ['categories']));
+        $place->update(Arr::except($validated, ['categories', 'photo']));
 
         // sync also removes the categories that were unticked
         $place->categories()->sync($validated['categories'] ?? []);
+
+        // only when a new photo was chosen (otherwise the current photo stays)
+        if ($request->hasFile('photo')) {
+            $place->addMediaFromRequest('photo')->toMediaCollection('photos');
+        }
 
         return redirect()->route('userzone.places.index');
     }
@@ -111,6 +120,7 @@ class PlaceController extends Controller
             'visited_on' => ['required', 'date'],
             'categories' => ['nullable', 'array'],
             'categories.*' => ['exists:categories,id'],
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:8192'],
         ];
     }
 
@@ -123,6 +133,9 @@ class PlaceController extends Controller
             'trip_id.required' => 'Please choose the trip of this place.',
             'latitude.between' => 'The latitude must be between -90 and 90.',
             'longitude.between' => 'The longitude must be between -180 and 180.',
+            'photo.image' => 'The photo must be an image.',
+            'photo.mimes' => 'The photo must be a jpg or png file.',
+            'photo.max' => 'The photo may not be larger than 8 MB.',
         ];
     }
 

@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <form action="{{ route('userzone.places.update', $place->id) }}" method="post">
+                    <form action="{{ route('userzone.places.update', $place->id) }}" method="post" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
 
@@ -27,6 +27,13 @@
                             </div>
 
                             <x-form-dateinput name="visited_on" label="Visited on" :value="$place->visited_on" required/>
+
+                            <div>
+                                <p class="mb-1 text-xs font-semibold">Current photo</p>
+                                <img src="{{ $place->getPhotoUrl() }}" alt="{{ $place->name }}" class="w-48 rounded-md">
+                            </div>
+
+                            <x-form-fileinput name="photo" label="Replace the photo (optional, jpg or png, max 8 MB)"/>
 
                             <x-form-multiselect name="categories" label="Categories (hold Ctrl or Cmd to choose several)" :options="$categoryOptions" :value="$place->categories->pluck('id')->all()"/>
                         </div>

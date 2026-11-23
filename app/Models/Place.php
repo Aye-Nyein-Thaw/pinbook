@@ -5,11 +5,15 @@ namespace App\Models;
 use Database\Factories\PlaceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Place extends Model
+class Place extends Model implements HasMedia
 {
     /** @use HasFactory<PlaceFactory> */
     use HasFactory;
+
+    use InteractsWithMedia;
 
     protected $guarded = [];
 
@@ -35,5 +39,20 @@ class Place extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        // a place has one photo: uploading a new one replaces the old one
+        $this->addMediaCollection('photos')->singleFile();
+    }
+
+    public function getPhotoUrl(): string
+    {
+        if ($this->hasMedia('photos')) {
+            return $this->getFirstMediaUrl('photos');
+        }
+
+        return '/img/default-place.png';
     }
 }

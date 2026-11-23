@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <form action="{{ route('userzone.places.store') }}" method="post">
+                    <form action="{{ route('userzone.places.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
                         <div class="space-y-4">
@@ -26,6 +26,8 @@
                             </div>
 
                             <x-form-dateinput name="visited_on" label="Visited on" required/>
+
+                            <x-form-fileinput name="photo" label="Photo (optional, jpg or png, max 8 MB)"/>
 
                             <x-form-multiselect name="categories" label="Categories (hold Ctrl or Cmd to choose several)" :options="$categoryOptions"/>
                         </div>
