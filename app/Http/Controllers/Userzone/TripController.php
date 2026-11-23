@@ -77,11 +77,12 @@ class TripController extends Controller
         abort_unless($trip->canManage(auth()->user()), 403);
 
         // our foreign keys are pure (no cascades), so we clean up ourselves:
-        // first the category links of its places, then the places and the comments
+        // each place loses its category links and is deleted as a model, so that
+        // its photo is removed as well; then the comments
         foreach ($trip->places as $place) {
             $place->categories()->detach();
+            $place->delete();
         }
-        $trip->places()->delete();
         $trip->comments()->delete();
 
         $trip->delete();
