@@ -39,6 +39,13 @@
                                 <td class="px-6 py-4">{{ $comment->approved_at ? 'Approved' : 'Waiting for approval' }}</td>
                                 <td class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-widest">
                                     <div class="flex items-center justify-end gap-4">
+                                        @unless($comment->approved_at)
+                                            <form action="{{ route('userzone.comments.approve', $comment->id) }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="text-teal-700 hover:text-teal-600">Approve</button>
+                                            </form>
+                                        @endunless
+
                                         <a href="{{ route('userzone.comments.show', $comment->id) }}" class="text-gray-800 hover:text-gray-600">View</a>
                                         <a href="{{ route('userzone.comments.edit', $comment->id) }}" class="text-gray-800 hover:text-gray-600">Edit</a>
 

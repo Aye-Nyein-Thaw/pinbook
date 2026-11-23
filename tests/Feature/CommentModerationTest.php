@@ -116,3 +116,46 @@ test('the owner and an admin can delete a comment', function () {
     $this->actingAs($this->admin)->delete(route('userzone.comments.destroy', $this->elsewhere->id));
     expect(Comment::find($this->elsewhere->id))->toBeNull();
 });
+
+test('the owner can approve a comment with the approve action', function () {
+    $this->actingAs($this->owner)
+        ->from(route('userzone.comments.index'))
+        ->post(route('userzone.comments.approve', $this->waiting->id))
+        ->assertRedirect(route('userzone.comments.index'));
+
+    expect($this->waiting->fresh()->approved_at)->not->toBeNull();
+});
+
+test('an admin can approve a comment on any trip', function () {
+    $this->actingAs($this->admin)->post(route('userzone.comments.approve', $this->elsewhere->id));
+
+    expect($this->elsewhere->fresh()->approved_at)->not->toBeNull();
+});
+
+test('approving again keeps the first approval date', function () {
+    $before = $this->approved->approved_at;
+
+    $this->actingAs($this->owner)->post(route('userzone.comments.approve', $this->approved->id));
+
+    expect($this->approved->fresh()->approved_at->timestamp)->toBe($before->timestamp);
+});
+
+test('a stranger and the writer can not approve a comment', function () {
+    $this->actingAs($this->stranger)->post(route('userzone.comments.approve', $this->waiting->id))->assertForbidden();
+    $this->actingAs($this->writer)->post(route('userzone.comments.approve', $this->waiting->id))->assertForbidden();
+
+    expect($this->waiting->fresh()->approved_at)->toBeNull();
+});
+
+test('a guest can not approve a comment', function () {
+    $this->post(route('userzone.comments.approve', $this->waiting->id))->assertRedirect(route('login'));
+
+    expect($this->waiting->fresh()->approved_at)->toBeNull();
+});
+
+test('only waiting comments get an approve button in the list', function () {
+    $this->actingAs($this->owner)
+        ->get(route('userzone.comments.index'))
+        ->assertSee(route('userzone.comments.approve', $this->waiting->id))
+        ->assertDontSee(route('userzone.comments.approve', $this->approved->id));
+});

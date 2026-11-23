@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\Userzone\ApproveCommentController;
 use App\Http\Controllers\Userzone\DashboardController;
 use App\Http\Controllers\Userzone\ProfileController;
 use App\Http\Controllers\WelcomeController;
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('places', App\Http\Controllers\Userzone\PlaceController::class)->except('show');
         // moderation of comments: no create/store (comments are posted on the trip page)
         Route::resource('comments', App\Http\Controllers\Userzone\CommentController::class)->except(['create', 'store']);
+        // approving is not a CRUD action: one POST route, one single-action controller
+        Route::post('comments/{id}/approve', ApproveCommentController::class)->name('comments.approve');
     });
 
     // Admin user routes -------------------------------------------------------------------------
