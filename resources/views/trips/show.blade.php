@@ -17,7 +17,7 @@
     <div class="mt-4 divide-y divide-teal-100 border-t border-teal-100">
         @forelse($places as $place)
             <div class="py-5">
-                <img src="{{ $place->getPhotoUrl() }}" alt="{{ $place->name }}" class="mb-3 w-40 rounded-md">
+                <img src="{{ $place->getPhotoUrl('thumbnail') }}" alt="{{ $place->name }}" class="mb-3 w-40 rounded-md">
                 <h3 class="text-lg font-semibold">
                     <a href="{{ route('places.show', $place->id) }}" class="text-teal-700 hover:underline">{{ $place->name }}</a>
                 </h3>

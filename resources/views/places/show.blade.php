@@ -8,7 +8,7 @@
         Trip: <a href="{{ route('trips.show', $place->trip->id) }}" class="text-teal-700 hover:underline">{{ $place->trip->title }}</a>
     </p>
 
-    <img src="{{ $place->getPhotoUrl() }}" alt="{{ $place->name }}" class="mt-6 w-full max-w-xl rounded-lg">
+    <img src="{{ $place->getPhotoUrl('details') }}" alt="{{ $place->name }}" class="mt-6 w-full max-w-xl rounded-lg">
 
     <div class="mt-4 flex flex-wrap gap-2">
         @foreach($place->categories as $category)

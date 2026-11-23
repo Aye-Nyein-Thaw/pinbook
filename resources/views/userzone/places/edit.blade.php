@@ -30,7 +30,7 @@
 
                             <div>
                                 <p class="mb-1 text-xs font-semibold">Current photo</p>
-                                <img src="{{ $place->getPhotoUrl() }}" alt="{{ $place->name }}" class="w-48 rounded-md">
+                                <img src="{{ $place->getPhotoUrl('thumbnail') }}" alt="{{ $place->name }}" class="w-48 rounded-md">
                             </div>
 
                             <x-form-fileinput name="photo" label="Replace the photo (optional, jpg or png, max 8 MB)"/>
