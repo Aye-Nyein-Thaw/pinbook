@@ -40,4 +40,16 @@ class Trip extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * The comments of this trip that the given user (or a guest: null) may see, newest first.
+     */
+    public function visibleCommentsFor($user)
+    {
+        return $this->comments()
+            ->with(['user', 'trip'])
+            ->orderByDesc('created_at')
+            ->get()
+            ->filter(fn (Comment $comment) => $comment->canView($user));
+    }
 }

@@ -34,7 +34,7 @@
         @endforelse
     </div>
 
-    <h2 class="mt-10 text-2xl font-semibold text-slate-900">Comments</h2>
+    <h2 class="mt-10 text-2xl font-semibold text-slate-900">Comments ({{ $comments->count() }})</h2>
 
     <x-trip-comment-form :trip="$trip" />
 
@@ -42,6 +42,15 @@
         @forelse($comments as $comment)
             <div class="py-4">
                 <strong class="text-sm text-slate-800">{{ $comment->user->name }}</strong>
+
+                @if($comment->approved_at === null)
+                    @if(auth()->id() === $comment->user_id)
+                        <p class="mt-1 text-sm text-amber-700">This comment is awaiting validation. Only you and the owner of the trip can see it.</p>
+                    @else
+                        <p class="mt-1 text-xs font-semibold uppercase tracking-wider text-amber-600">Awaiting validation</p>
+                    @endif
+                @endif
+
                 <p class="mt-1 text-sm leading-6 text-slate-600">{{ $comment->content }}</p>
             </div>
         @empty

@@ -24,8 +24,8 @@ class TripController extends Controller
 
         $places = $trip->places()->orderBy('visited_on')->get();
 
-        // the newest comments first
-        $comments = $trip->comments()->orderByDesc('created_at')->get();
+        // the newest comments first, and only the ones this visitor may see
+        $comments = $trip->visibleCommentsFor(auth()->user());
 
         return view('trips.show', compact('trip', 'places', 'comments'));
     }
