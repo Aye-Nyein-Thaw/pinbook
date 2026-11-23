@@ -1,88 +1,103 @@
-<h1 align="center">Educational Starter Pack<br><sub>for</sub></h1>
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pinbook
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Pinbook is a travel journal.** Users write down their trips, pin the places they visited (with a photo, a position and categories), and share the trips they want to make public. Visitors can read the public trips and leave a comment once they are logged in; the owner of a trip moderates the comments.
 
+Final project for *Modern Web Application 1* (Harbour.Space), built with Laravel 13 and PHP 8.5.
 
----
+## What can you do?
 
-## About this Starter Pack
+| Who | What |
+|---|---|
+| **Visitor** (not logged in) | See the welcome page with the latest public trips, browse all public trips, open a trip and a place, browse the categories. |
+| **User** (logged in) | Everything above, plus: create, edit and delete **my trips** and **my places** (with a photo and categories), comment on a trip, see and moderate (approve, edit, delete) the comments on my own trips, manage my profile. |
+| **Admin** | Everything a user can do, on **all** trips, places and comments, plus management of the **categories**. |
 
-This is a starter pack for **Laravel tailored for educational purposes**.
+Some rules worth knowing:
 
-It is aimed at helping students and beginners to quickly set up a Laravel development environment that allows for 
-learning the basics without the need to configure everything from scratch.
+- A **private** trip (and its places) is not shown on the public pages at all; it only appears in the user zone of its owner (and of admins).
+- A **new comment waits for approval**. Until then only its writer, the owner of the trip and admins can see it. The owner gets an email when someone comments.
+- Uploaded photos get resized copies (thumbnail and details size); a place without a photo shows a default picture.
+- The menu is defined once and shown in both the header and the footer of the public pages.
 
-### Changes from the original Laravel repository
-It provides a pre-configured environment with some opinionated settings and packages for the educational context. 
-Initial customisation was done based on Laravel version 12.x. (12.37.0 on November 9th, 2025).
-Updated to Laravel 13.x (13.42 on November 11th, 2026), running on PHP 8.5, including now also Laravel Boost.
+## Data structure
 
-- Added **barryvdh/laravel-debugbar** for debug info in the browser
-- Altered **.env.example** for local development (SQLite database, debug mode on, cache and session set to file)
-- Added **roave/security-advisories** to prevent installation of packages with known security issues
-- Added **laravel/boost** for AI assisted code generation, including skills for Claude Code and Codex
-- Used **laravel/breeze** for authentication scaffolding with Blade templates (but moved all of the component views to a `components.breeze` subfolder for better organization; the Breeze package itself is no longer required)
-- Front-end assets are built with **Vite 8** and **Tailwind CSS 4**, with a fallback to **CDN includes of Tailwind CSS and Alpine JS** when no build is present
-- Replaced PHPUnit by **Pest PHP** for testing, kept basic example tests
-- Some other small tweaks in configuration files, routes, controller, and view organisation to better reflect the educational purpose (rigid structure)
+```mermaid
+erDiagram
+    USER ||--o{ TRIP : "owns"
+    USER ||--o{ COMMENT : "writes"
+    TRIP ||--o{ PLACE : "has"
+    TRIP ||--o{ COMMENT : "receives"
+    PLACE }o--o{ CATEGORY : "category_place"
+    PLACE ||--o| MEDIA : "photo"
 
-No front-end build is needed to get started. When there is no Vite build in `public/build`, the application falls back to CDN-hosted Tailwind CSS and Alpine JS. Running `npm run build` (or `npm run dev`) switches it to the compiled assets.
-
-Everything that follows below (and the shields in the header) are part of the original Laravel README.md file.
-
----
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+    USER { int id string name string email bool is_admin }
+    TRIP { int id int user_id string title text description string destination date start_date date end_date bool is_public }
+    PLACE { int id int trip_id string name text story decimal latitude decimal longitude date visited_on }
+    CATEGORY { int id string name }
+    COMMENT { int id int trip_id int user_id text content datetime approved_at }
+    MEDIA { int id string model_type int model_id string collection_name string file_name }
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+- **One-to-many:** User → Trip, Trip → Place, Trip → Comment, User → Comment.
+- **Many-to-many:** Place ↔ Category (pivot table `category_place`).
+- **Media** is the table of the Spatie Media Library (photos of places).
 
-## Contributing
+## Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Requirements: **PHP 8.5** (with the `gd` extension), **Composer**, and **SQLite** (no database server needed). [Laravel Herd](https://herd.laravel.com) has all of this. No Node/npm is needed: without a build the pages load Tailwind CSS from a CDN.
 
-## Code of Conduct
+```bash
+# 1. Get the code
+git clone https://github.com/Aye-Nyein-Thaw/pinbook.git
+cd pinbook
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 2. Install the PHP packages
+composer install
 
-## Security Vulnerabilities
+# 3. Create your environment file and the application key
+cp .env.example .env
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 4. Create the SQLite database file, then the tables and the demo data
+touch database/database.sqlite
+php artisan migrate:fresh --seed
 
-## License
+# 5. Make the uploaded photos reachable from the web
+php artisan storage:link
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Then start the application, either with `php artisan serve` and open <http://localhost:8000>, or with Herd (put the folder in a Herd site, for example `pinbook.test`, and set `APP_URL` in `.env` to that address).
+
+### Emails and the queue
+
+Emails (the "new comment" notification to the trip owner) are **queued**, and in development they are **written to the log** instead of being sent (`MAIL_MAILER=log`). To process the queue, run in a second terminal:
+
+```bash
+php artisan queue:work
+```
+
+Then open `storage/logs/laravel.log` to read the email. (For a quick test without a worker you can set `QUEUE_CONNECTION=sync` in `.env`.)
+
+## Logins
+
+All demo users have the password **`password`**.
+
+| Email | Role |
+|---|---|
+| `admin@example.com` | admin |
+| `admin@admin.com` | admin |
+| `test@example.com` | normal user |
+
+The seeder also creates 5 more random users, 8 categories, 15 trips with places, and about 120 comments (some of them waiting for approval).
+
+## Useful commands
+
+```bash
+php artisan migrate:fresh --seed   # reset the database with fresh demo data
+php artisan test                   # run the Pest tests
+vendor/bin/pint                    # fix the code style
+```
+
+## Built on
+
+The Educational Starter Pack for Laravel from the course (Laravel 13, Breeze-style authentication, Pest, Debugbar), extended with [Spatie Media Library](https://spatie.be/docs/laravel-medialibrary) for the photos.
