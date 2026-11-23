@@ -21,6 +21,9 @@ Dashboard
                     <x-breeze.nav-link :href="route('userzone.places.index')" :active="request()->routeIs('userzone.places.*')">
                         My places
                     </x-breeze.nav-link>
+                    <x-breeze.nav-link :href="route('userzone.comments.index')" :active="request()->routeIs('userzone.comments.*')">
+                        Comments
+                    </x-breeze.nav-link>
                     @if(auth()->user()->is_admin)
                         <x-breeze.nav-link :href="route('userzone.categories.index')" :active="request()->routeIs('userzone.categories.*')">
                             Categories
@@ -86,6 +89,9 @@ Log Out
             </x-breeze.responsive-nav-link>
             <x-breeze.responsive-nav-link :href="route('userzone.places.index')" :active="request()->routeIs('userzone.places.*')">
                 My places
+            </x-breeze.responsive-nav-link>
+            <x-breeze.responsive-nav-link :href="route('userzone.comments.index')" :active="request()->routeIs('userzone.comments.*')">
+                Comments
             </x-breeze.responsive-nav-link>
             @if(auth()->user()->is_admin)
                 <x-breeze.responsive-nav-link :href="route('userzone.categories.index')" :active="request()->routeIs('userzone.categories.*')">

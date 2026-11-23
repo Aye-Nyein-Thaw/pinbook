@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('user')->name('userzone.')->group(function () {
         Route::resource('trips', App\Http\Controllers\Userzone\TripController::class)->except('show');
         Route::resource('places', App\Http\Controllers\Userzone\PlaceController::class)->except('show');
+        // moderation of comments: no create/store (comments are posted on the trip page)
+        Route::resource('comments', App\Http\Controllers\Userzone\CommentController::class)->except(['create', 'store']);
     });
 
     // Admin user routes -------------------------------------------------------------------------
