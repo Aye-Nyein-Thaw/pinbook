@@ -11,6 +11,8 @@ class Comment extends Model
     /** @use HasFactory<CommentFactory> */
     use HasFactory;
 
+    protected $guarded = [];
+
     public function trip()
     {
         return $this->belongsTo(Trip::class);
