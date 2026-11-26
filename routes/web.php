@@ -55,3 +55,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Resource action	Controller method	Purpose
+//     index            index()         Show all trips
+//     create	        create()        Show the create form
+//     store	        store()         Save a new trip
+//     show	            show()          Show one trip
+//     edit	            edit()          Show the edit form
+//     update	        update()        Save changes
+//     destroy	        destroy()       Delete a trip
+
+// we can use custom controller method names
+// but for Route:resource(), Laravel expects standard resource method names
+
+// The rule is:
+//  - Route::resource() → follow Laravel's standard resource method names.
+//  - Route::get() / Route::post() etc. → you can specify your own controller method name.

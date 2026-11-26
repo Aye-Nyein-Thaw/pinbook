@@ -19,6 +19,6 @@ class IsAdmin
             abort(403);
         }
 
-        return $next($request);
+        return $next($request); // check passed - continue to next step
     }
 }

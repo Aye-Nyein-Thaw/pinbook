@@ -11,6 +11,7 @@ class Trip extends Model
     /** @use HasFactory<TripFactory> */
     use HasFactory;
 
+    // no field is blocked from mass assignment.
     protected $guarded = [];
 
     public function canManage($user): bool
@@ -44,12 +45,20 @@ class Trip extends Model
     /**
      * The comments of this trip that the given user (or a guest: null) may see, newest first.
      */
+    // retrieves comments that a particular user is allowed to see
     public function visibleCommentsFor($user)
     {
-        return $this->comments()
-            ->with(['user', 'trip'])
-            ->orderByDesc('created_at')
+        return $this->comments()             // get all comments belonging to this trip
+            ->with(['user', 'trip'])         // load related user and trip for the comment
+            ->orderByDesc('created_at')      // order by newest comments
             ->get()
             ->filter(fn (Comment $comment) => $comment->canView($user));
+        // checks each comment - Only comments for which canView($user) returns true remain in the collection
     }
 }
+
+// Logic for visibleCommentsFor($user)
+//  - Retrieve comments for this Trip
+//  - Sort newest first
+//  - Check each comment with canView($user)
+//  - Return only the comments this visitor may see
