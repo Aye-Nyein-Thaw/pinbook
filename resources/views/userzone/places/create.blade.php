@@ -27,7 +27,7 @@
 
                             <x-form-dateinput name="visited_on" label="Visited on" required/>
 
-                            <x-form-fileinput name="photo" label="Photo (optional, jpg or png, max 8 MB)"/>
+                            <x-form-fileinput name="photo" label="Photo (optional, jpg or png, max 10 MB)"/>
 
                             <x-form-multiselect name="categories" label="Categories (hold Ctrl or Cmd to choose several)" :options="$categoryOptions"/>
                         </div>

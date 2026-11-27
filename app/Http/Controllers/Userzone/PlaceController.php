@@ -129,7 +129,7 @@ class PlaceController extends Controller
             'visited_on' => ['required', 'date'],
             'categories' => ['nullable', 'array'],
             'categories.*' => ['exists:categories,id'],
-            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:8192'],
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:10240'],
         ];
     }
 
@@ -144,7 +144,7 @@ class PlaceController extends Controller
             'longitude.between' => 'The longitude must be between -180 and 180.',
             'photo.image' => 'The photo must be an image.',
             'photo.mimes' => 'The photo must be a jpg or png file.',
-            'photo.max' => 'The photo may not be larger than 8 MB.',
+            'photo.max' => 'The photo may not be larger than 10 MB.',
         ];
     }
 

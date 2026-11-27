@@ -33,7 +33,7 @@
                                 <img src="{{ $place->getPhotoUrl('thumbnail') }}" alt="{{ $place->name }}" class="w-48 rounded-md">
                             </div>
 
-                            <x-form-fileinput name="photo" label="Replace the photo (optional, jpg or png, max 8 MB)"/>
+                            <x-form-fileinput name="photo" label="Replace the photo (optional, jpg or png, max 10 MB)"/>
 
                             <x-form-multiselect name="categories" label="Categories (hold Ctrl or Cmd to choose several)" :options="$categoryOptions" :value="$place->categories->pluck('id')->all()"/>
                         </div>
