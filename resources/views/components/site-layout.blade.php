@@ -13,16 +13,18 @@
     </title>
 
     @fonts
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Styles / Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{{ asset('css/pinbook.css') }}">
 </head>
-<body class="bg-teal-50 font-sans text-slate-800 antialiased">
+<body class="pinbook antialiased">
 
-<div class="mx-auto flex min-h-screen max-w-6xl flex-col bg-white shadow-sm">
+<div class="flex min-h-screen flex-col">
     <x-site-layout-header :menu="$menu" />
 
-    <main class="flex-1 px-10 py-10">
+    <main class="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
         {{ $slot }}
     </main>
 

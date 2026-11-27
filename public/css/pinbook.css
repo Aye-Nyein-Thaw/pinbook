@@ -1,0 +1,291 @@
+/*
+ * Pinbook theme: "travel journal".
+ * Tailwind does the layout (spacing, grid, sizes). This file does our look.
+ * Plugged in with one line: <link rel="stylesheet" href="{{ asset('css/pinbook.css') }}">
+ */
+
+/* ---------- 1. Theme variables: change a colour here, it changes everywhere ---------- */
+:root {
+    --paper: #faf6ee;        /* page background */
+    --card: #fffdf8;         /* cards on the paper */
+    --ink: #1e2a44;          /* text */
+    --muted: #6b7280;        /* dates, small text */
+    --sunset: #c75b32;       /* links and main buttons */
+    --sunset-dark: #a8461f;
+    --sea: #1f6f6b;          /* header and details */
+    --sand: #eadfc8;         /* borders and footer */
+
+    --font-title: 'Fraunces', Georgia, serif;
+    --font-text: 'Inter', system-ui, sans-serif;
+}
+
+/* ---------- 2. Basics ---------- */
+.pinbook {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-text);
+}
+
+.pinbook h1,
+.pinbook h2,
+.pinbook h3 {
+    font-family: var(--font-title);
+}
+
+.link {
+    color: var(--sunset);
+    font-weight: 500;
+}
+
+.link:hover {
+    color: var(--sunset-dark);
+    text-decoration: underline;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.page-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* ---------- 3. Header and footer ---------- */
+.site-header {
+    background: var(--sea);
+    color: #fff;
+}
+
+.site-header a {
+    color: #fff;
+    opacity: 0.9;
+}
+
+.site-header a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.brand {
+    font-family: var(--font-title);
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.site-footer {
+    background: var(--sand);
+    border-top: 3px dashed var(--sunset);
+}
+
+/* ---------- 4. Welcome hero ---------- */
+.hero {
+    /* the dark layer on top of the photo keeps the white text readable */
+    background: linear-gradient(rgba(20, 30, 50, 0.45), rgba(20, 30, 50, 0.65)),
+        url('/img/hero.jpg') center / cover;
+    border-radius: 1rem;
+    color: #fff;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+}
+
+.photo-credit {
+    font-size: 0.7rem;
+    opacity: 0.75;
+}
+
+/* ---------- 5. Buttons ---------- */
+.btn,
+.btn-light {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn {
+    background: var(--sunset);
+    color: #fff;
+}
+
+.btn:hover {
+    background: var(--sunset-dark);
+}
+
+.btn-light {
+    border: 2px solid #fff;
+    color: #fff;
+}
+
+.btn-light:hover {
+    background: #fff;
+    color: var(--ink);
+}
+
+/* ---------- 6. Cards, tags and the passport stamp ---------- */
+.card {
+    background: var(--card);
+    border: 1px solid var(--sand);
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 6px rgba(30, 42, 68, 0.07);
+    padding: 1.25rem;
+}
+
+a.card,
+.card-hover {
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+a.card:hover,
+.card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(30, 42, 68, 0.14);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.stamp {
+    display: inline-block;
+    border: 2px dashed var(--sea);
+    border-radius: 0.4rem;
+    color: var(--sea);
+    padding: 0.2rem 0.6rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transform: rotate(-2deg);
+}
+
+.tag {
+    border-radius: 999px;
+    background: var(--sand);
+    padding: 0.15rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ---------- 7. Trip page: the places as a route with stops ---------- */
+.route {
+    border-left: 3px dashed var(--sunset);
+    margin-left: 0.5rem;
+    padding-left: 2rem;
+}
+
+.stop {
+    position: relative;
+}
+
+/* the dot on the dashed line */
+.stop::before {
+    content: '';
+    position: absolute;
+    left: calc(-2rem - 10px);
+    top: 1.5rem;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: var(--sunset);
+    border: 3px solid var(--paper);
+}
+
+/* ---------- 8. Photos ---------- */
+.polaroid {
+    background: #fff;
+    padding: 0.5rem 0.5rem 1.75rem;
+    box-shadow: 0 6px 16px rgba(30, 42, 68, 0.18);
+    transform: rotate(-1.5deg);
+}
+
+/* ---------- 9. Login and register pages ---------- */
+.auth-page {
+    display: flex;
+    min-height: 100vh;
+}
+
+.auth-photo {
+    display: none;
+    flex: 1;
+    position: relative;
+    background: url('/img/auth.jpg') center / cover;
+    color: #fff;
+}
+
+.auth-photo .photo-credit {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 1rem;
+}
+
+.auth-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.auth-form .card {
+    width: 100%;
+    max-width: 28rem;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.auth-logo svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    fill: var(--sunset);
+}
+
+.auth-form button[type='submit'] {
+    background: var(--sunset);
+}
+
+.auth-form button[type='submit']:hover {
+    background: var(--sunset-dark);
+}
+
+@media (min-width: 768px) {
+    .auth-photo {
+        display: block;
+    }
+}
+
+/* ---------- 10. Form fields and the dashboard (reuse their Tailwind classes, new colours) ---------- */
+.pinbook textarea {
+    background: #fff;
+}
+
+.userzone .bg-gray-800 {
+    background-color: var(--sea);
+}
+
+.userzone .bg-gray-800:hover {
+    background-color: var(--ink);
+}
+
+.userzone .bg-gray-100 {
+    background-color: var(--paper);
+}
