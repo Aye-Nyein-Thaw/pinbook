@@ -22,3 +22,6 @@ class IsAdmin
         return $next($request); // check passed - continue to next step
     }
 }
+
+
+// security checkpoint that a request must pass through before reaching the controller

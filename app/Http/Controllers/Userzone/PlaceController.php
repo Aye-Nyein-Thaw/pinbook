@@ -41,11 +41,18 @@ class PlaceController extends Controller
 
     public function store(Request $request)
     {
+
+        // methods for managing many-to-many relationships through a pivot table
+        //    attach() - adds connections, keep existing ones
+        //    sync()   - makes connections exactly as provided in the args. e.g. sync([2,3])
+        //    detach() - removes all connections
+        
         $validated = $request->validate($this->validationRules(), $this->validationMessages());
 
         $this->abortUnlessAllowedToUseTrip($validated['trip_id']);
 
-        // "categories" and "photo" are not columns of places
+        // "categories" and "photo" are not columns of places table
+        // when creating the place, remove them from the validated array
         $place = Place::create(Arr::except($validated, ['categories', 'photo']));
 
         $place->categories()->sync($validated['categories'] ?? []);

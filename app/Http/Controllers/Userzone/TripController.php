@@ -29,6 +29,9 @@ class TripController extends Controller
 
     public function create()
     {
+        // displays the new trip creation form
+        // Only displays the form. Does not edit anything
+
         return view('userzone.trips.create', [
             'visibilityOptions' => $this->visibilityOptions(),
         ]);
@@ -36,9 +39,11 @@ class TripController extends Controller
 
     public function store(Request $request)
     {
+        // saves a new trip. creates a new record in the database
+
         $validated = $request->validate($this->validationRules(), $this->validationMessages());
 
-        // the trip belongs to the logged-in user, never to a value sent by the form
+        // the trip belongs to the logged-in user, never to a value sent by the form (for security)
         $validated['user_id'] = auth()->user()->id;
 
         Trip::create($validated);
@@ -48,6 +53,8 @@ class TripController extends Controller
 
     public function edit(int $id)
     {
+        // display the edit form
+
         $trip = Trip::findOrFail($id);
 
         abort_unless($trip->canManage(auth()->user()), 403);
@@ -60,6 +67,8 @@ class TripController extends Controller
 
     public function update(Request $request, int $id)
     {
+        // save changes to a trip
+
         $validated = $request->validate($this->validationRules(), $this->validationMessages());
 
         $trip = Trip::findOrFail($id);
@@ -74,6 +83,8 @@ class TripController extends Controller
 
     public function destroy(int $id)
     {
+        // deletes a trip
+
         $trip = Trip::findOrFail($id);
 
         abort_unless($trip->canManage(auth()->user()), 403);
@@ -81,12 +92,16 @@ class TripController extends Controller
         // our foreign keys are pure (no cascades), so we clean up ourselves:
         // each place loses its category links and is deleted as a model, so that
         // its photo is removed as well; then the comments
+        // detach() removes pivot table links -> then, delete the place
         foreach ($trip->places as $place) {
             $place->categories()->detach();
             $place->delete();
         }
+
+        // delete the trip's comment
         $trip->comments()->delete();
 
+        // delete the trip
         $trip->delete();
 
         return redirect()->route('userzone.trips.index');

@@ -88,3 +88,6 @@ class Comment extends Model
 // Trip owner Yes
 // Admin      Yes
 // Other logged-in user No
+
+// canView() controls visibility.
+// canManage() controls management permissions, such as approving or deleting a comment.

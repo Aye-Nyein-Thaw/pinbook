@@ -28,3 +28,9 @@ class ApproveCommentController extends Controller
         return redirect()->back();
     }
 }
+
+// special method name __invoke() allows a controller to be called like a function.
+// a route can point directly to the controller class rather than specifying a method:
+// Route::post(
+//     'comments/{id}/approve',
+//     ApproveCommentController::class);

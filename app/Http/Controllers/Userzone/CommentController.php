@@ -12,10 +12,12 @@ class CommentController extends Controller
     {
         $comments = Comment::query()
             ->with(['user', 'trip'])
+            
             // an admin sees the comments on all trips, others only on their own trips
             ->when(! auth()->user()->is_admin, function ($query) {
                 $query->whereHas('trip', fn ($trip) => $trip->where('user_id', auth()->user()->id));
             })
+            
             // /user/comments?unmoderated=1 shows only the comments waiting for approval
             ->when($request->boolean('unmoderated'), fn ($query) => $query->whereNull('approved_at'))
             ->orderByDesc('created_at')
@@ -62,6 +64,7 @@ class CommentController extends Controller
         $comment->update([
             'content' => $validated['content'],
             // keep the original approval date if it was already approved
+            // if not approved, set it to null
             'approved_at' => $request->boolean('approved') ? ($comment->approved_at ?? now()) : null,
         ]);
 
