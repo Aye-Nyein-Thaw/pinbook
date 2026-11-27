@@ -45,9 +45,20 @@ class DatabaseSeeder extends Seeder
 
         Trip::factory(15)->create();
         $places = Place::factory(30)->create();
-        foreach ($places as $place) {
+
+        // full paths of the seed photos, sorted by name: place-01.jpg, place-02.jpg, ...
+        $photos = glob(storage_path('seedings/places/*.jpg'));
+
+        foreach ($places as $index => $place) {
             $subset = Category::inRandomOrder()->take(rand(0, 3))->pluck('id')->toArray();
             $place->categories()->attach($subset);
+
+            // photo N belongs to place N (same order as in PlaceFactory); % starts again at the first photo if there are fewer photos
+            if (count($photos) > 0) {
+                $place->addMedia($photos[$index % count($photos)])
+                    ->preservingOriginal() // copy the file, keep the original in storage/seedings
+                    ->toMediaCollection('photos');
+            }
         }
 
         Comment::factory(105)->create();
