@@ -18,17 +18,26 @@
             <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
             <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.1/dist/cdn.min.js"></script>
         @endif
+
+        <!-- Pinbook theme -->
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('css/pinbook.css') }}">
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-breeze.application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
+    <body class="pinbook antialiased">
+        <div class="auth-page">
+            <div class="auth-photo">
+                <p class="photo-credit">Photo: Oia sunset by TomasEE, CC BY 3.0, Wikimedia Commons</p>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
+            <div class="auth-form">
+                <a href="/" class="auth-logo">
+                    <x-breeze.application-logo />
+                    <h1>Pinbook</h1>
+                </a>
+
+                <div class="card">
+                    {{ $slot }}
+                </div>
             </div>
         </div>
     </body>
