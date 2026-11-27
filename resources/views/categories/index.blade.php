@@ -1,14 +1,14 @@
 <x-site-layout title="Categories">
 
-    <h1 class="text-3xl font-bold tracking-tight text-teal-800">Categories</h1>
+    <h1 class="page-title">Categories</h1>
 
-    <div class="mt-6 divide-y divide-teal-100 border-t border-teal-100">
+    <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         @foreach($categories as $category)
-            <div class="flex items-center justify-between py-4">
-                <h2 class="text-lg font-semibold">
-                    <a href="{{ route('categories.show', $category->id) }}" class="text-teal-700 hover:underline">{{ $category->name }}</a>
+            <div class="card card-hover">
+                <h2 class="card-title">
+                    <a href="{{ route('categories.show', $category->id) }}" class="link">{{ $category->name }}</a>
                 </h2>
-                <p class="text-sm text-slate-500">{{ $category->places_count }} {{ Str::plural('place', $category->places_count) }}</p>
+                <p class="muted mt-1 text-sm">{{ $category->places_count }} {{ Str::plural('place', $category->places_count) }}</p>
             </div>
         @endforeach
     </div>
