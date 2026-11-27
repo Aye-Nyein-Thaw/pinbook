@@ -29,7 +29,7 @@
 
                             <x-form-fileinput name="photo" label="Photo (optional, jpg or png, max 10 MB)"/>
 
-                            <x-form-multiselect name="categories" label="Categories (hold Ctrl or Cmd to choose several)" :options="$categoryOptions"/>
+                            <x-form-multiselect name="categories" label="Categories" placeholder="Choose categories" :options="$categoryOptions"/>
                         </div>
 
                         <hr class="my-4"/>

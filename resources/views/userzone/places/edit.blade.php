@@ -35,7 +35,7 @@
 
                             <x-form-fileinput name="photo" label="Replace the photo (optional, jpg or png, max 10 MB)"/>
 
-                            <x-form-multiselect name="categories" label="Categories (hold Ctrl or Cmd to choose several)" :options="$categoryOptions" :value="$place->categories->pluck('id')->all()"/>
+                            <x-form-multiselect name="categories" label="Categories" placeholder="Choose categories" :options="$categoryOptions" :value="$place->categories->pluck('id')->all()"/>
                         </div>
 
                         <hr class="my-4"/>
