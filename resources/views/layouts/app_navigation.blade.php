@@ -15,6 +15,10 @@
                     <x-breeze.nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
 Dashboard
                     </x-breeze.nav-link>
+                    {{-- back to the public site: all public trips, also those of other users --}}
+                    <x-breeze.nav-link :href="route('trips.index')">
+                        All trips
+                    </x-breeze.nav-link>
                     <x-breeze.nav-link :href="route('userzone.trips.index')" :active="request()->routeIs('userzone.trips.*')">
                         My trips
                     </x-breeze.nav-link>
@@ -83,6 +87,10 @@ Log Out
         <div class="pt-2 pb-3 space-y-1">
             <x-breeze.responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 Dashboard
+            </x-breeze.responsive-nav-link>
+            {{-- back to the public site: all public trips, also those of other users --}}
+            <x-breeze.responsive-nav-link :href="route('trips.index')">
+                All trips
             </x-breeze.responsive-nav-link>
             <x-breeze.responsive-nav-link :href="route('userzone.trips.index')" :active="request()->routeIs('userzone.trips.*')">
                 My trips
