@@ -25,8 +25,10 @@ class TripController extends Controller
         $places = $trip->places()->orderBy('visited_on')->get();
 
         // the newest comments first, and only the ones this visitor may see
+        // auth() - helper function by Laravel. gives access to Laravel's authentication system
         $comments = $trip->visibleCommentsFor(auth()->user());
 
         return view('trips.show', compact('trip', 'places', 'comments'));
     }
 }
+
