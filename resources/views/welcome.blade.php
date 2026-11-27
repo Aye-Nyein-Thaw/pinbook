@@ -10,14 +10,14 @@
         @foreach($trips as $trip)
             <div class="py-5">
                 <h3 class="text-lg font-semibold">
-                    <a href="{{ route('trips.show', $trip->id) }}" class="text-teal-700 hover:underline">{{ $trip->title }}</a>
+                    <a href="{{ route('trips.show', $trip['id']) }}" class="text-teal-700 hover:underline">{{ $trip['title'] }}</a>
                 </h3>
                 <p class="mt-1 text-sm text-slate-500">
-                    {{ $trip->destination }}
+                    {{ $trip['destination'] }}
                     &middot;
-                    {{ $trip->start_date }} - {{ $trip->end_date }}
+                    {{ $trip['start_date'] }} - {{ $trip['end_date'] }}
                     &middot;
-                    by {{ $trip->user->name }}
+                    by {{ $trip['owner'] }}
                 </p>
             </div>
         @endforeach
