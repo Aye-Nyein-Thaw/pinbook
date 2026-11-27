@@ -9,6 +9,7 @@ class TripController extends Controller
     public function index()
     {
         $trips = Trip::query()
+            ->with('user')
             ->where('is_public', true)
             ->orderByDesc('start_date')
             ->get();
@@ -22,7 +23,7 @@ class TripController extends Controller
             ->where('is_public', true)
             ->findOrFail($id);
 
-        $places = $trip->places()->orderBy('visited_on')->get();
+        $places = $trip->places()->with(['media', 'categories'])->orderBy('visited_on')->get();
 
         // the newest comments first, and only the ones this visitor may see
         // auth() - helper function by Laravel. gives access to Laravel's authentication system
@@ -31,4 +32,3 @@ class TripController extends Controller
         return view('trips.show', compact('trip', 'places', 'comments'));
     }
 }
-

@@ -34,6 +34,7 @@ class CategoryController extends Controller
 
         // find places belonging to one category
         $places = $category->places()
+            ->with('trip')
             ->whereHas('trip', $isPublic)
             ->orderBy('name')
             ->get();
@@ -42,8 +43,6 @@ class CategoryController extends Controller
     }
 }
 
-
 // whereHas() filters categories based on whether related records exist that satisfy a condition
 // with('places')       - The actual related places
 // withCount('places')  - The number of related places
-

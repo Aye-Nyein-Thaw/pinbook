@@ -9,11 +9,11 @@ class WelcomeController extends Controller
     /**
      * Handle the incoming request.
      */
-
     public function __invoke()
     {
         // get only public trips using query()
         $trips = Trip::query()
+            ->with('user')
             ->where('is_public', true)
             ->orderByDesc('start_date')
             ->take(6)

@@ -13,10 +13,12 @@ class TripController extends Controller
         if (auth()->user()->is_admin) {
             // an admin sees the trips of everybody
             $trips = Trip::query()
+                ->with('user')
                 ->orderByDesc('start_date')
                 ->get();
         } else {
             $trips = Trip::query()
+                ->with('user')
                 ->where('user_id', auth()->user()->id)
                 ->orderByDesc('start_date')
                 ->get();

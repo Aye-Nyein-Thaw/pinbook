@@ -16,11 +16,13 @@ class PlaceController extends Controller
         if (auth()->user()->is_admin) {
             // an admin sees the places of everybody
             $places = Place::query()
+                ->with(['trip.user', 'categories'])
                 ->orderBy('name')
                 ->get();
         } else {
             // the places of the trips of the logged-in user
             $places = Place::query()
+                ->with(['trip.user', 'categories'])
                 ->whereHas('trip', fn ($query) => $query->where('user_id', auth()->user()->id))
                 ->orderBy('name')
                 ->get();
