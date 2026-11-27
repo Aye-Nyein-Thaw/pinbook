@@ -32,7 +32,14 @@
                     <tbody class="divide-y divide-gray-100">
                         @forelse($trips as $trip)
                             <tr>
-                                <td class="px-6 py-4">{{ $trip->title }}</td>
+                                <td class="px-6 py-4">
+                                    {{-- only public trips have a public page; a private one would give a 404 --}}
+                                    @if($trip->is_public)
+                                        <a href="{{ route('trips.show', $trip->id) }}" class="link underline">{{ $trip->title }}</a>
+                                    @else
+                                        {{ $trip->title }}
+                                    @endif
+                                </td>
                                 @if(auth()->user()->is_admin)
                                     <td class="px-6 py-4">{{ $trip->user->name }}</td>
                                 @endif
