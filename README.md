@@ -16,7 +16,8 @@ Some rules worth knowing:
 
 - A **private** trip (and its places) is not shown on the public pages at all; it only appears in the user zone of its owner (and of admins).
 - A **new comment waits for approval**. Until then only its writer, the owner of the trip and admins can see it. The owner gets an email when someone comments.
-- Uploaded photos get resized copies (thumbnail and details size); a place without a photo shows a default picture.
+- A place has one photo (jpg or png, up to 10 MB). It gets resized copies (thumbnail and details size); a place without a photo shows a default picture.
+- The welcome page is cached for 10 seconds, so a new trip can take up to 10 seconds to appear there.
 - The menu is defined once and shown in both the header and the footer of the public pages.
 
 ## Data structure
@@ -41,6 +42,20 @@ erDiagram
 - **One-to-many:** User → Trip, Trip → Place, Trip → Comment, User → Comment.
 - **Many-to-many:** Place ↔ Category (pivot table `category_place`).
 - **Media** is the table of the Spatie Media Library (photos of places).
+
+## How the code is organised
+
+| Where | What |
+|---|---|
+| `routes/web.php` | Public routes, then the user zone under `/user` (needs login); category management also needs the `IsAdmin` middleware |
+| `app/Http/Controllers/` | Public pages (read-only): welcome, trips, places, categories, posting a comment |
+| `app/Http/Controllers/Userzone/` | Managing trips, places, comments (with a single-action controller to approve a comment) and categories |
+| `app/Http/Requests/` | Form Requests with the validation rules and messages for trips and places |
+| `app/Models/` | The models with their relationships, plus `canManage()` / `canView()` permission checks |
+| `app/Http/Middleware/IsAdmin.php` | Only lets admins through |
+| `app/Notifications/` | The queued "new comment on your trip" email |
+| `public/css/pinbook.css` | The travel theme (colours, fonts, cards); Tailwind classes in the views handle the layout |
+| `storage/seedings/places/` | The 30 demo photos used by the seeder (credits in `CREDITS.md`) |
 
 ## Installation
 
@@ -68,6 +83,13 @@ php artisan storage:link
 
 Then start the application, either with `php artisan serve` and open <http://localhost:8000>, or with Herd (put the folder in a Herd site, for example `pinbook.test`, and set `APP_URL` in `.env` to that address).
 
+### Photo uploads up to 10 MB
+
+The app accepts photos up to 10 MB, but PHP (and the web server) usually allow only 2 MB by default. Bigger uploads then fail with a validation error or "413 Request Entity Too Large". To allow them, raise these limits:
+
+- `php.ini`: `upload_max_filesize = 10M` and `post_max_size = 12M`
+- With Herd (nginx): `client_max_body_size 12M;` in Herd's nginx config, then restart Herd
+
 ### Emails and the queue
 
 Emails (the "new comment" notification to the trip owner) are **queued**, and in development they are **written to the log** instead of being sent (`MAIL_MAILER=log`). To process the queue, run in a second terminal:
@@ -88,7 +110,7 @@ All demo users have the password **`password`**.
 | `admin@admin.com` | admin |
 | `test@example.com` | normal user |
 
-The seeder also creates 5 more random users, 8 categories, 15 trips with places, and about 120 comments (some of them waiting for approval).
+The seeder also creates 5 more random users, 8 categories, 15 trips, 30 places (each with a real photo from `storage/seedings/places`), and 120 comments (15 of them waiting for approval).
 
 ## Useful commands
 
@@ -101,3 +123,5 @@ vendor/bin/pint                    # fix the code style
 ## Built on
 
 The Educational Starter Pack for Laravel from the course (Laravel 13, Breeze-style authentication, Pest, Debugbar), extended with [Spatie Media Library](https://spatie.be/docs/laravel-medialibrary) for the photos.
+
+The demo photos (including the welcome and login backgrounds) come from Wikimedia Commons under CC BY / CC BY-SA / FAL licences; authors and links are listed in [`storage/seedings/places/CREDITS.md`](storage/seedings/places/CREDITS.md).
