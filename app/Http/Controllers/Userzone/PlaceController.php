@@ -33,6 +33,7 @@ class PlaceController extends Controller
 
     public function create()
     {
+        // this returns only view
         return view('userzone.places.create', [
             'tripOptions' => $this->tripOptions(),
             'categoryOptions' => $this->categoryOptions(),

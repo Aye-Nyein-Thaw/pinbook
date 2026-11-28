@@ -11,9 +11,8 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
-/*
- * Public Website routes
- */
+
+// Public Website routes
 Route::get('/', WelcomeController::class)->name('welcome');
 
 Route::resource('trips', TripController::class)->only(['index', 'show']);
@@ -23,14 +22,11 @@ Route::resource('categories', CategoryController::class)->only(['index', 'show']
 // a comment belongs to a trip: /trips/{trip}/comments (only logged in users may comment)
 Route::resource('trips.comments', CommentController::class)->only(['store'])->middleware('auth');
 
-/*
- * Authentication routes
- */
+// Authentication routes
 require __DIR__.'/auth.php';
 
-/*
- * Userzone routes
- */
+
+// Userzone routes
 Route::middleware('auth')->group(function () {
     // For the user's dashboard (after login)
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
