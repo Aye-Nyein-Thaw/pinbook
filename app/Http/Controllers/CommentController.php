@@ -13,8 +13,8 @@ class CommentController extends Controller
     {
         // step 0 - validation
         $validated = $request->validate(
-            ['content' => ['required', 'string', 'min:3', 'max:1000'],], 
-            ['content.min' => 'Your comment needs at least 3 characters.',]);
+            ['content' => ['required', 'string', 'min:3', 'max:1000']],
+            ['content.min' => 'Your comment needs at least 3 characters.']);
 
         // step 1 - load the necessary data (comments are only possible on public trips)
         $trip = Trip::query()
@@ -37,6 +37,5 @@ class CommentController extends Controller
         return redirect()->back();
     }
 }
-
 
 // This is for comment submission

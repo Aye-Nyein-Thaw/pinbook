@@ -23,5 +23,4 @@ class IsAdmin
     }
 }
 
-
 // security checkpoint that a request must pass through before reaching the controller

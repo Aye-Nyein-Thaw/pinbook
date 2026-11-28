@@ -11,7 +11,6 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
-
 // Public Website routes
 Route::get('/', WelcomeController::class)->name('welcome');
 
@@ -25,7 +24,6 @@ Route::resource('trips.comments', CommentController::class)->only(['store'])->mi
 // Authentication routes
 require __DIR__.'/auth.php';
 
-
 // Userzone routes
 Route::middleware('auth')->group(function () {
     // For the user's dashboard (after login)
@@ -35,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('user')->name('userzone.')->group(function () {
         Route::resource('trips', App\Http\Controllers\Userzone\TripController::class)->except('show');
         Route::resource('places', App\Http\Controllers\Userzone\PlaceController::class)->except('show');
-        
+
         // moderation of comments: no create/store (comments are posted on the trip page)
         Route::resource('comments', App\Http\Controllers\Userzone\CommentController::class)->except(['create', 'store']);
         // approving is not a CRUD action: one POST route, one single-action controller

@@ -47,7 +47,7 @@ class PlaceController extends Controller
         //    attach() - adds connections, keep existing ones
         //    sync()   - makes connections exactly as provided in the args. e.g. sync([2,3])
         //    detach() - removes all connections
-        
+
         $validated = $request->validate($this->validationRules(), $this->validationMessages());
 
         $this->abortUnlessAllowedToUseTrip($validated['trip_id']);
