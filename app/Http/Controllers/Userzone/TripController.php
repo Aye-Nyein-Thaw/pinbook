@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Userzone;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TripRequest;
 use App\Models\Trip;
-use Illuminate\Http\Request;
 
 class TripController extends Controller
 {
@@ -37,11 +37,12 @@ class TripController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(TripRequest $request)
     {
         // saves a new trip. creates a new record in the database
 
-        $validated = $request->validate($this->validationRules(), $this->validationMessages());
+        // TripRequest has already validated the data before this method runs
+        $validated = $request->validated();
 
         // the trip belongs to the logged-in user, never to a value sent by the form (for security)
         $validated['user_id'] = auth()->user()->id;
@@ -65,11 +66,12 @@ class TripController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $id)
+    public function update(TripRequest $request, int $id)
     {
         // save changes to a trip
 
-        $validated = $request->validate($this->validationRules(), $this->validationMessages());
+        // TripRequest has already validated the data before this method runs
+        $validated = $request->validated();
 
         $trip = Trip::findOrFail($id);
 
@@ -105,33 +107,6 @@ class TripController extends Controller
         $trip->delete();
 
         return redirect()->route('userzone.trips.index');
-    }
-
-    /**
-     * @return array<string, array<int, string>>
-     */
-    private function validationRules(): array
-    {
-        return [
-            'title' => ['required', 'string', 'min:3', 'max:255'],
-            'description' => ['required', 'string'],
-            'destination' => ['required', 'string', 'max:255'],
-            'start_date' => ['required', 'date'],
-            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
-            'is_public' => ['required', 'boolean'],
-        ];
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function validationMessages(): array
-    {
-        return [
-            'title.min' => 'The title needs at least 3 characters.',
-            'end_date.after_or_equal' => 'The end date can not be before the start date.',
-            'is_public.required' => 'Please choose public or private.',
-        ];
     }
 
     /**
