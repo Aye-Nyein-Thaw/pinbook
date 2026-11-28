@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Userzone;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PlaceRequest;
 use App\Models\Category;
 use App\Models\Place;
 use App\Models\Trip;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class PlaceController extends Controller
@@ -40,7 +40,7 @@ class PlaceController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(PlaceRequest $request)
     {
 
         // methods for managing many-to-many relationships through a pivot table
@@ -48,7 +48,8 @@ class PlaceController extends Controller
         //    sync()   - makes connections exactly as provided in the args. e.g. sync([2,3])
         //    detach() - removes all connections
 
-        $validated = $request->validate($this->validationRules(), $this->validationMessages());
+        // PlaceRequest has already validated the data before this method runs
+        $validated = $request->validated();
 
         $this->abortUnlessAllowedToUseTrip($validated['trip_id']);
 
@@ -78,9 +79,10 @@ class PlaceController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $id)
+    public function update(PlaceRequest $request, int $id)
     {
-        $validated = $request->validate($this->validationRules(), $this->validationMessages());
+        // PlaceRequest has already validated the data before this method runs
+        $validated = $request->validated();
 
         $place = Place::findOrFail($id);
 
@@ -114,39 +116,6 @@ class PlaceController extends Controller
         $place->delete();
 
         return redirect()->route('userzone.places.index');
-    }
-
-    /**
-     * @return array<string, array<int, string>>
-     */
-    private function validationRules(): array
-    {
-        return [
-            'trip_id' => ['required', 'exists:trips,id'],
-            'name' => ['required', 'string', 'min:2', 'max:255'],
-            'story' => ['required', 'string'],
-            'latitude' => ['required', 'numeric', 'between:-90,90'],
-            'longitude' => ['required', 'numeric', 'between:-180,180'],
-            'visited_on' => ['required', 'date'],
-            'categories' => ['nullable', 'array'],
-            'categories.*' => ['exists:categories,id'],
-            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:10240'],
-        ];
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function validationMessages(): array
-    {
-        return [
-            'trip_id.required' => 'Please choose the trip of this place.',
-            'latitude.between' => 'The latitude must be between -90 and 90.',
-            'longitude.between' => 'The longitude must be between -180 and 180.',
-            'photo.image' => 'The photo must be an image.',
-            'photo.mimes' => 'The photo must be a jpg or png file.',
-            'photo.max' => 'The photo may not be larger than 10 MB.',
-        ];
     }
 
     /**
